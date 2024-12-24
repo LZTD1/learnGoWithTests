@@ -1,6 +1,9 @@
 package memStorage
 
-import "sync"
+import (
+	"learnGoWithTests/http/entity"
+	"sync"
+)
 
 type MemStorage struct {
 	store map[string]int
@@ -20,4 +23,13 @@ func (m *MemStorage) RecordWin(name string) {
 	m.m.Lock()
 	m.store[name]++
 	m.m.Unlock()
+}
+func (i *MemStorage) GetLeague() entity.League {
+	var l []entity.Player
+
+	for name, wins := range i.store {
+		l = append(l, entity.Player{Name: name, Wins: wins})
+	}
+
+	return l
 }
