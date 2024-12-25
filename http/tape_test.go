@@ -1,4 +1,4 @@
-package http
+package poker
 
 import (
 	"io"
@@ -6,19 +6,20 @@ import (
 )
 
 func TestTape_Write(t *testing.T) {
-	f, c := createTempFile(t, "12345")
-	defer c()
+	file, clean := createTempFile(t, "12345")
+	defer clean()
 
-	tape := &tape{f}
+	tape := &tape{file}
+
 	tape.Write([]byte("abc"))
 
-	f.Seek(0, io.SeekStart)
-	newFileContents, _ := io.ReadAll(f)
+	file.Seek(0, io.SeekStart)
+	newFileContents, _ := io.ReadAll(file)
 
 	got := string(newFileContents)
 	want := "abc"
 
 	if got != want {
-		t.Errorf("got %q, want %q", got, want)
+		t.Errorf("got %q want %q", got, want)
 	}
 }
